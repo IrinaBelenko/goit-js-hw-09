@@ -29,6 +29,11 @@ const options = {
 const countingTime = () => {
   const curDateMS = Date.now();
   const ms = futDateMS - curDateMS;
+  if (ms <= 0) {
+    clearInterval(timerId);
+
+    return;
+  }
   const objTime = convertMs(ms);
   const keys = Object.keys(objTime);
 
@@ -38,6 +43,7 @@ const countingTime = () => {
     timeEl.textContent = addLeadingZero(objTime[key]);
   }
 };
+
 startBtn.disabled = true;
 
 startBtn.addEventListener('click', () => {
@@ -67,5 +73,10 @@ function convertMs(ms) {
 
 function addLeadingZero(value) {
   const str = String(value);
-  return str.padStart(2, '0');
+  let targetLength = 2;
+  if (str.length > 2) {
+    targetLength = str.length;
+  }
+
+  return str.padStart(targetLength, '0');
 }
